@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的 
+	例如namespace="com.zjlianhe.android.mapping.book_mapping"就是com.zjlianhe.android.mapping(包名)+.book_mapping(.book_mapping.xml文件去除后缀) -->
+<mapper namespace="com.zjlianhe.android.mapping.BookMapper">
+	<!-- 在select标签中编写查询的SQL语句: 1、设置select标签的id属性为getBook，id属性值必须是唯一的，不能够重复 2、使用parameterType属性指明查询时使用的参数类型,resultType属性指明查询返回的结果集类型 
+		resultType="com.zjlianhe.android.bean.Book"就表示将查询结果封装成一个Book类的对象返回 Book类就是book表所对应的实体类 -->
+	<!-- 根据id查询得到一个Book对象 -->
+	<select id="getBook" resultType="com.zjlianhe.android.bean.Book">
+		select * from book
+	</select>
+	<!-- 根据作者查询 -->
+	<select id="getBookByAuthor" parameterType="String"
+		resultType="com.zjlianhe.android.bean.Book">
+		select * from book where author=#{author}
+	</select>
+	<!-- 根据bookid查询 -->
+	<select id="getBookByID" parameterType="String"
+		resultType="com.zjlianhe.android.bean.Book">
+		select * from book where bookId=#{bookId}
+	</select>
+	<!--插入操作 注意：插入的时候与该处字段的顺序有关系 -->
+	<insert id="addBook" parameterType="com.zjlianhe.android.bean.Book">
+		insert into book
+		values(#{bookId},#{date},#{bookName},#{author},#{publisher})
+	</insert>
+
+	<!--批量插入操作 注意：与单条插入的不同写法 -->
+	<insert id="insertList" parameterType="java.util.List">
+		insert into book values
+		<foreach collection="list" item="book" index="index"
+			separator=",">
+			(#{book.bookId},#{book.date},#{book.bookName},#{book.author},#{book.publisher})
+		</foreach>
+	</insert>
+
+
+	<!-- 更新操作 -->
+	<update id="updateBook" parameterType="com.zjlianhe.android.bean.Book">
+		update book set
+		author=#{author}
+		where bookId=#{bookId}
+	</update>
+	<!-- 删除操作 -->
+	<delete id="deleteBook" parameterType="int">
+		delete from book where
+		bookId=#{bookId}
+	</delete>
+
+	<!-- 1. id （必须配置） id是命名空间中的唯一标识符，可被用来代表这条语句。 一个命名空间（namespace） 对应一个dao接口, 
+		这个id也应该对应dao里面的某个方法（相当于方法的实现），因此id 应该与方法名一致 id="insertUser" -->
+
+	<!--2. parameterType （可选配置, 默认为mybatis自动选择处理） 将要传入语句的参数的完全限定类名或别名， 如果不配置，mybatis会通过ParameterHandler 
+		根据参数类型默认选择合适的typeHandler进行处理 parameterType 主要指定参数类型，可以是int, short, long, 
+		string等类型，也可以是复杂类型（如对象） parameterType="com.demo.User" -->
+
+	<!--3. flushCache （可选配置，默认配置为true） 将其设置为 true，任何时候只要语句被调用，都会导致本地缓存和二级缓存都会被清空，默认值：true（对应插入、更新和删除语句） 
+		flushCache="true" -->
+
+	<!--4. statementType （可选配置，默认配置为PREPARED） STATEMENT，PREPARED 或 CALLABLE 
+		的一个。这会让 MyBatis 分别使用 Statement，PreparedStatement 或 CallableStatement，默认值：PREPARED。 
+		statementType="PREPARED" -->
+
+	<!-- 5. keyProperty (可选配置， 默认为unset) （仅对 insert 和 update 有用）唯一标记一个属性，MyBatis 
+		会通过 getGeneratedKeys 的返回值或者通过 insert 语句的 selectKey 子元素设置它的键值，默认：unset。如果希望得到多个生成的列，也可以是逗号分隔的属性名称列表。 
+		keyProperty="" -->
+
+	<!-- 6. keyColumn (可选配置) （仅对 insert 和 update 有用）通过生成的键值设置表中的列名，这个设置仅在某些数据库（像 
+		PostgreSQL）是必须的，当主键列不是表中的第一列的时候需要设置。如果希望得到多个生成的列，也可以是逗号分隔的属性名称列表。 keyColumn="" -->
+
+	<!-- 7. useGeneratedKeys (可选配置， 默认为false) （仅对 insert 和 update 有用）这会令 MyBatis 
+		使用 JDBC 的 getGeneratedKeys 方法来取出由数据库内部生成的主键（比如：像 MySQL 和 SQL Server 这样的关系数据库管理系统的自动递增字段），默认值：false。 
+		useGeneratedKeys="false" -->
+
+	<!-- 8. timeout (可选配置， 默认为unset, 依赖驱动) 这个设置是在抛出异常之前，驱动程序等待数据库返回请求结果的秒数。默认值为 
+		unset（依赖驱动）。 timeout="20"> -->
+
+
+</mapper>
