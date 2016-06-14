@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.springframework.core.enums.LetterCodedLabeledEnum;
 
 import com.zjlianhe.android.bean.Book;
 import com.zjlianhe.android.mapping.BookMapper;
@@ -38,7 +39,11 @@ public class MyBatisTest {
 		// updateBook(sqlSession);
 		// deleteBook(sqlSession);
 		// getBookByID(sqlSession);
-		insertList(sqlSession);
+		// insertList(sqlSession);
+		String name = "zhangyubao";
+		String name1 = "zhangyB";
+		name  = name1;
+		System.out.println(name);
 	}
 
 	/**
